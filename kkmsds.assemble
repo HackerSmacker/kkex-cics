@@ -1,0 +1,154 @@
+         TITLE 'KKEX CICS MAPS'                                         00020000
+         PRINT NOGEN                                                    00030000
+KKMSD    DFHMSD TYPE=MAP,LANG=C,FOLD=UPPER,MODE=INOUT,STORAGE=AUTO,    *00040008
+               SUFFIX=                                                  00050008
+MAPA     DFHMDI SIZE=(24,80),MAPATTS=(COLOR,HILIGHT)                    00060009
+SDATE    DFHMDF POS=(01,02),LENGTH=10,COLOR=GREEN                       00070000
+         DFHMDF POS=(01,14),LENGTH=14,INITIAL='Sheet Name -> '          00080000
+WSHEET   DFHMDF POS=(01,29),LENGTH=8,COLOR=PINK                         00090000
+         DFHMDF POS=(01,39),LENGTH=18,INITIAL='Workspace Name -> '      00100000
+WSPNM    DFHMDF POS=(01,59),LENGTH=8,COLOR=PINK                         00110000
+STIME    DFHMDF POS=(01,72),LENGTH=8,COLOR=GREEN                        00120000
+                                                                        00130000
+HD1      DFHMDF POS=(04,21),LENGTH=1,COLOR=GREEN                        00140000
+HD2      DFHMDF POS=(04,40),LENGTH=1,COLOR=GREEN                        00150000
+HD3      DFHMDF POS=(04,59),LENGTH=1,COLOR=GREEN                        00160000
+HD4      DFHMDF POS=(04,78),LENGTH=1,COLOR=GREEN                        00170000
+                                                                        00180000
+RD1      DFHMDF POS=(05,01),LENGTH=2,COLOR=GREEN                        00190000
+BD1      DFHMDF POS=(05,04),LENGTH=18                                   00200000
+BD2      DFHMDF POS=(05,23),LENGTH=18                                   00210000
+BD3      DFHMDF POS=(05,42),LENGTH=18                                   00220000
+BD4      DFHMDF POS=(05,61),LENGTH=18                                   00230000
+                                                                        00240000
+RD2      DFHMDF POS=(06,01),LENGTH=2,COLOR=GREEN                        00250000
+BD5      DFHMDF POS=(06,04),LENGTH=18                                   00260000
+BD6      DFHMDF POS=(06,23),LENGTH=18                                   00270000
+BD7      DFHMDF POS=(06,42),LENGTH=18                                   00280000
+BD8      DFHMDF POS=(06,61),LENGTH=18                                   00290000
+                                                                        00300000
+RD3      DFHMDF POS=(07,01),LENGTH=2,COLOR=GREEN                        00310000
+BD9      DFHMDF POS=(07,04),LENGTH=18                                   00320000
+BD10     DFHMDF POS=(07,23),LENGTH=18                                   00330000
+BD11     DFHMDF POS=(07,42),LENGTH=18                                   00340000
+BD12     DFHMDF POS=(07,61),LENGTH=18                                   00350000
+                                                                        00360000
+RD4      DFHMDF POS=(08,01),LENGTH=2,COLOR=GREEN                        00370000
+BD13     DFHMDF POS=(08,04),LENGTH=18                                   00380000
+BD14     DFHMDF POS=(08,23),LENGTH=18                                   00390000
+BD15     DFHMDF POS=(08,42),LENGTH=18                                   00400000
+BD16     DFHMDF POS=(08,61),LENGTH=18                                   00410000
+                                                                        00420000
+RD5      DFHMDF POS=(09,01),LENGTH=2,COLOR=GREEN                        00430000
+BD17     DFHMDF POS=(09,04),LENGTH=18                                   00440000
+BD18     DFHMDF POS=(09,23),LENGTH=18                                   00450000
+BD19     DFHMDF POS=(09,42),LENGTH=18                                   00460000
+BD20     DFHMDF POS=(09,61),LENGTH=18                                   00470000
+                                                                        00480000
+RD6      DFHMDF POS=(10,01),LENGTH=2,COLOR=GREEN                        00490000
+BD21     DFHMDF POS=(10,04),LENGTH=18                                   00500000
+BD22     DFHMDF POS=(10,23),LENGTH=18                                   00510000
+BD23     DFHMDF POS=(10,42),LENGTH=18                                   00520000
+BD24     DFHMDF POS=(10,61),LENGTH=18                                   00530000
+                                                                        00540000
+RD7      DFHMDF POS=(11,01),LENGTH=2,COLOR=GREEN                        00550000
+BD25     DFHMDF POS=(11,04),LENGTH=18                                   00560000
+BD26     DFHMDF POS=(11,23),LENGTH=18                                   00570000
+BD27     DFHMDF POS=(11,42),LENGTH=18                                   00580000
+BD28     DFHMDF POS=(11,61),LENGTH=18                                   00590000
+                                                                        00600000
+RD8      DFHMDF POS=(12,01),LENGTH=2,COLOR=GREEN                        00610000
+BD29     DFHMDF POS=(12,04),LENGTH=18                                   00620000
+BD30     DFHMDF POS=(12,23),LENGTH=18                                   00630000
+BD31     DFHMDF POS=(12,42),LENGTH=18                                   00640000
+BD32     DFHMDF POS=(12,61),LENGTH=18                                   00650000
+                                                                        00660000
+RD9      DFHMDF POS=(13,01),LENGTH=2,COLOR=GREEN                        00670000
+BD33     DFHMDF POS=(13,04),LENGTH=18                                   00680000
+BD34     DFHMDF POS=(13,23),LENGTH=18                                   00690000
+BD35     DFHMDF POS=(13,42),LENGTH=18                                   00700000
+BD36     DFHMDF POS=(13,61),LENGTH=18                                   00710000
+                                                                        00720000
+RD10     DFHMDF POS=(14,01),LENGTH=2,COLOR=GREEN                        00730000
+BD37     DFHMDF POS=(14,04),LENGTH=18                                   00740000
+BD38     DFHMDF POS=(14,23),LENGTH=18                                   00750000
+BD39     DFHMDF POS=(14,42),LENGTH=18                                   00760000
+BD40     DFHMDF POS=(14,61),LENGTH=18                                   00770000
+                                                                        00780000
+RD11     DFHMDF POS=(15,01),LENGTH=2,COLOR=GREEN                        00790000
+BD41     DFHMDF POS=(15,04),LENGTH=18                                   00800000
+BD42     DFHMDF POS=(15,23),LENGTH=18                                   00810000
+BD43     DFHMDF POS=(15,42),LENGTH=18                                   00820000
+BD44     DFHMDF POS=(15,61),LENGTH=18                                   00830000
+                                                                        00840000
+RD12     DFHMDF POS=(16,01),LENGTH=2,COLOR=GREEN                        00850000
+BD45     DFHMDF POS=(16,04),LENGTH=18                                   00860000
+BD46     DFHMDF POS=(16,23),LENGTH=18                                   00870000
+BD47     DFHMDF POS=(16,42),LENGTH=18                                   00880000
+BD48     DFHMDF POS=(16,61),LENGTH=18                                   00890000
+                                                                        00900000
+RD13     DFHMDF POS=(17,01),LENGTH=2,COLOR=GREEN                        00910000
+BD49     DFHMDF POS=(17,04),LENGTH=18                                   00920000
+BD50     DFHMDF POS=(17,23),LENGTH=18                                   00930000
+BD51     DFHMDF POS=(17,42),LENGTH=18                                   00940000
+BD52     DFHMDF POS=(17,61),LENGTH=18                                   00950000
+                                                                        00960000
+RD14     DFHMDF POS=(18,01),LENGTH=2,COLOR=GREEN                        00970000
+BD53     DFHMDF POS=(18,04),LENGTH=18                                   00980000
+BD54     DFHMDF POS=(18,23),LENGTH=18                                   00990000
+BD55     DFHMDF POS=(18,42),LENGTH=18                                   01000000
+BD56     DFHMDF POS=(18,61),LENGTH=18                                   01010000
+                                                                        01020000
+RD15     DFHMDF POS=(19,01),LENGTH=2,COLOR=GREEN                        01030000
+BD57     DFHMDF POS=(19,04),LENGTH=18                                   01040000
+BD58     DFHMDF POS=(19,23),LENGTH=18                                   01050000
+BD59     DFHMDF POS=(19,42),LENGTH=18                                   01060000
+BD60     DFHMDF POS=(19,61),LENGTH=18                                   01070000
+                                                                        01080000
+         DFHMDF POS=(21,02),LENGTH=8,INITIAL='Cell -> ',COLOR=YELLOW    01090000
+CELL     DFHMDF POS=(21,10),LENGTH=3,ATTRB=(IC,FSET)                    01100000
+         DFHMDF POS=(21,18),LENGTH=9,INITIAL='Value -> ',COLOR=YELLOW   01110000
+VALUE    DFHMDF POS=(21,28),LENGTH=18,ATTRB=(FSET)                      01120000
+                                                                        01130000
+         DFHMDF POS=(22,02),LENGTH=11,INITIAL='PF1  - EXIT',COLOR=RED   01140000
+         DFHMDF POS=(22,15),LENGTH=11,INITIAL='PF2  - LOAD',COLOR=PINK  01150000
+         DFHMDF POS=(22,28),LENGTH=11,INITIAL='PF3  - SAVE',COLOR=PINK  01160000
+         DFHMDF POS=(22,41),LENGTH=11,INITIAL='PF4  - NEW ',COLOR=PINK  01170000
+         DFHMDF POS=(22,54),LENGTH=11,INITIAL='PF5  - CELL',COLOR=PINK  01180000
+         DFHMDF POS=(22,67),LENGTH=11,INITIAL='PF6  - PROG',COLOR=PINK  01190000
+                                                                        01200000
+         DFHMDF POS=(23,02),LENGTH=11,INITIAL='PF7  - HOME',COLOR=PINK  01210000
+         DFHMDF POS=(23,15),LENGTH=11,INITIAL='PF8  - BOT ',COLOR=PINK  01220000
+         DFHMDF POS=(23,28),LENGTH=11,INITIAL='PF9  - TOP ',COLOR=PINK  01230000
+         DFHMDF POS=(23,41),LENGTH=11,INITIAL='PF10 - LEFT',COLOR=PINK  01240000
+         DFHMDF POS=(23,54),LENGTH=12,INITIAL='PF11 - RIGHT',COLOR=PINK 01250000
+         DFHMDF POS=(23,67),LENGTH=11,INITIAL='PF12 - VIEW',COLOR=PINK  01260000
+                                                                        01270000
+MAPB     DFHMDI SIZE=(24,80),MAPATTS=(COLOR,HILIGHT)                    01280009
+         DFHMDF POS=(01,02),LENGTH=4,INITIAL='MAPB'                     01290000
+         DFHMDF POS=(01,33),LENGTH=14,INITIAL='Save Workspace'          01300000
+         DFHMDF POS=(12,30),LENGTH=5,INITIAL='Save '                    01310000
+         DFHMDF POS=(12,35),LENGTH=18,INITIAL='Workspace Name -> '      01320000
+SWKSP    DFHMDF POS=(12,55),LENGTH=9,ATTRB=(IC,FSET)                    01330000
+                                                                        01340000
+MAPC     DFHMDI SIZE=(24,80),MAPATTS=(COLOR,HILIGHT)                    01350009
+         DFHMDF POS=(01,02),LENGTH=4,INITIAL='MAPC'                     01360000
+         DFHMDF POS=(01,33),LENGTH=14,INITIAL='Load Workspace'          01370000
+         DFHMDF POS=(12,30),LENGTH=5,INITIAL='Load '                    01380000
+         DFHMDF POS=(12,35),LENGTH=18,INITIAL='Workspace Name -> '      01390000
+LWKSP    DFHMDF POS=(12,55),LENGTH=9,ATTRB=(IC,FSET)                    01400000
+ZERR1    DFHMDF POS=(14,34),LENGTH=20,COLOR=RED                         01410000
+ZERR2    DFHMDF POS=(15,34),LENGTH=24,COLOR=RED                         01420000
+                                                                        01430000
+MAPD     DFHMDI SIZE=(24,80),MAPATTS=(COLOR,HILIGHT)                    01440009
+         DFHMDF POS=(01,02),LENGTH=4,INITIAL='MAPD'                     01450000
+         DFHMDF POS=(01,33),LENGTH=14,INITIAL='View Workspace'          01460000
+         DFHMDF POS=(12,30),LENGTH=14,INITIAL='New Column -> '          01470000
+NCOL     DFHMDF POS=(12,46),LENGTH=3,ATTRB=(IC,FSET)                    01480000
+         DFHMDF POS=(14,32),LENGTH=11,INITIAL='New Row -> '             01490000
+NROW     DFHMDF POS=(14,46),LENGTH=9,ATTRB=(FSET)                       01500000
+         DFHMDF POS=(23,30),LENGTH=14,INITIAL='Press ENTER to'          01510000
+         DFHMDF POS=(23,45),LENGTH=9,INITIAL=' Continue'                01520000
+                                                                        01530000
+         DFHMSD TYPE=FINAL                                              01540000
+         END                                                            01550000

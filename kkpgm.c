@@ -1,4 +1,3 @@
-USERID KICKS
 /*  kkpgm.c */
 
     #include <stdio.h>
@@ -10,7 +9,7 @@ USERID KICKS
     #include <time.h>
 
 #include "dfhaid.h"
-#include "kkmsd.h"		/* symbolic map */
+#include "kkmsd.h"
 
       void Scr_out(void);
       void Clear_pr(void);
@@ -29,7 +28,7 @@ USERID KICKS
       void Load_wsp(void);
       void Get_date(void);
       void Get_time(void);
-      void View_dsp(void);
+      void view_dsp(void);
       void Sum_proc(void);
       void Avg_proc(void);
       void Rng_proc(void);
@@ -45,7 +44,7 @@ USERID KICKS
       void Print_pr(void);
     double asc_2_dbl(void);
       void Pow_dsp(void);
-   
+
     double sum = 0;
     double avg = 0;
     double value;
@@ -71,7 +70,7 @@ USERID KICKS
     int pi;
     int day, month, year;
     int hour, min, sec;
-    int t,i1,j1,i2,j2,k,l,m,n,row,col;
+    int t,i1,j3,i2,j2,k,l,m,n,row,col;
     int jj,i9;
     int sv_rct;
     int sv_cct;
@@ -111,13 +110,13 @@ USERID KICKS
 
       FILE *fp;
 
-    int main(KIKEIB *eib)
+    int main()
     {
        int opa, ops, opm, opd;
        int u2;
        int u3;
        int u4;
-           
+
        char fblk3[3];
        char fblk18[18];
 
@@ -125,8 +124,8 @@ USERID KICKS
        rct = 0;
        cct = 1;
        exmode = 1;
-       strcpy(mapa.mapao.wsheeto, "CELL");
-       strcpy(wkspace, "EMPTY"); 
+       strcpy(MAPA.MAPAO.WSHEETO, "CELL");
+       strcpy(wkspace, "EMPTY");
 
        Scr_out();
 
@@ -134,80 +133,81 @@ USERID KICKS
        {
 
 start1:
-          
+
          EXEC CICS SEND
-              MAP("mapa") MAPSET("kkmsd") ERASE
+              MAP("MAPA") MAPSET("kkmsd") ERASE
               ;
 
          EXEC CICS RECEIVE
-              MAP("mapa") MAPSET("kkmsd") NOHANDLE
+              MAP("MAPA") MAPSET("kkmsd") NOHANDLE
               ;
+         EXEC CICS ADDRESS EIB(dfheiptr);
 
-         if(eib->eibaid == KIKPF1)		/* PF1  EXIT */
+         if(dfheiptr->eibaid == DFHPF1)		/* PF1 EXIT */
          {
              break;
          }
 
-         if(eib->eibaid == KIKPF2)		/* PF2  Load */
+         if(dfheiptr->eibaid == DFHPF2)		/* PF2 Load */
          {
              exmode = 1;
              Load_wsp();
              goto skip_save;
-         } 
- 
-         if(eib->eibaid == KIKPF3)		/* PF3  Save */
+         }
+
+         if(dfheiptr->eibaid == DFHPF3)		/* PF3 Save */
          {
              exmode = 1;
              Save_wsp();
              goto print_loop;
          }
 
-         if(eib->eibaid == KIKPF4)		/* PF4  New  */
+         if(dfheiptr->eibaid == DFHPF4)		/* PF4 New */
          {
              Clear_pr();
              rct = 0;
              cct = 1;
              exmode = 1;
-             strcpy(mapa.mapao.wsheeto, "CELL");
-             strcpy(wkspace, "EMPTY"); 
+             strcpy(MAPA.MAPAO.WSHEETO, "CELL");
+             strcpy(wkspace, "EMPTY");
              goto print_loop;
          }
 
-         if(eib->eibaid == KIKPF5)		/* PF5  Cell */
+         if(dfheiptr->eibaid == DFHPF5)		/* PF5 Cell */
          {
              exmode = 1;
              goto skip_save;
          }
 
-         if(eib->eibaid == KIKPF6)		/* PF6  Prog */
+         if(dfheiptr->eibaid == DFHPF6)		/* PF6 Prog */
          {
              exmode = 2;
              goto print_loop;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF7)		/* PF7  Home */
+         if(dfheiptr->eibaid == DFHPF7)		/* PF7 Home */
          {
              sv_rct = 1;
              sv_cct = 1;
              exmode = 1;
              goto skip_save;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF8)		/* PF8  BOT  */
+         if(dfheiptr->eibaid == DFHPF8)		/* PF8 BOT */
          {
              sv_rct = bots;
              exmode = 1;
              goto print_loop;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF9)		/* PF9  TOP  */
+         if(dfheiptr->eibaid == DFHPF9)		/* PF9 TOP */
          {
              sv_rct = 1;
              exmode = 1;
              goto skip_save;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF10)	/* PF10  LEFT  */
+         if(dfheiptr->eibaid == DFHPF10)	/* PF10 LEFT */
          {
              sv_cct = sv_cct - 4;
              if(sv_cct < 1)
@@ -216,24 +216,24 @@ start1:
              }
              exmode = 1;
              goto skip_save;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF11)	/* PF11  RIGHT  */
+         if(dfheiptr->eibaid == DFHPF11)	/* PF11 RIGHT */
          {
              sv_cct = sv_cct + 4;
              exmode = 1;
              goto skip_save;
-         } 
+         }
 
-         if(eib->eibaid == KIKPF12)	/* PF12  VIEW  */
+         if(dfheiptr->eibaid == DFHPF12)	/* PF12 VIEW */
          {
              view_dsp();
              exmode = 1;
              goto skip_save;
-         } 
+         }
 
-         strcpy(cellnum, mapa.mapai.celli);
-         strcpy(input, mapa.mapai.valuei);
+         strcpy(cellnum, MAPA.MAPAI.CELLI);
+         strcpy(input, MAPA.MAPAI.VALUEI);
 
          if(cellnum[0] == ' ')
          {
@@ -245,7 +245,7 @@ start1:
          u4 = 18;
          for(u3 = 0; u3 <= 18; u3++)
          {
-            u2 = isalnum(input[u4]); 
+            u2 = isalnum(input[u4]);
             if(u2 == 0)
             {
                if(input[u4] == ')')
@@ -261,14 +261,14 @@ start1:
             }
             u4--;
           }
-        
+
           if(cellnum[0] == 'Z')
           {
              col = 26;
              wk_row[0] = cellnum[1];
              wk_row[1] = cellnum[2];
              wk_row[2] = '\0';
-             row = atoi(wk_row);     
+             row = atoi(wk_row);
           }
           else
           {
@@ -301,10 +301,10 @@ start1:
 
           /*  load source (program) */
           strcpy(src[row][col], input);
-                     
+
           p = strstr(input, "=");
 
-          if(!p) 
+          if(!p)
           {
                p2 = strstr(input, "-");
                if(p2)
@@ -321,14 +321,14 @@ start1:
                   {
                      z4 = atoi(input);
                      sprintf(sheet[row][col], "%d", z4);
-                     flag[row][col] = 1; 
+                     flag[row][col] = 1;
                      spreadsheet[row][col] = z4;
                   }
                }
           }
 
-          if(!p) 
-          { 
+          if(!p)
+          {
              if(isNumber(input))        /*  numeric cell */
              {
                 p1 = strstr(input, ".");
@@ -347,7 +347,7 @@ start1:
                    sheet[row][col][18] = '\0';
                 }
              }
-             else                    /* text cell */     
+             else                    /* text cell */
              {
                 strcpy(sheet[row][col], input);
                 sheet[row][col][18] = '\0';
@@ -361,7 +361,7 @@ start1:
 skip_save:
 
         /* *** Re-Compute *** */
-       
+
         for(i9 = 1; i9 <= wsize; i9++)
         {
            for(jj = 1; jj <= 26; jj++)  		/* i9 = row  jj = col */
@@ -371,7 +371,7 @@ skip_save:
 
               p = strstr(input, "_");
               if(!p)
-              { 
+              {
                  opa = 0;
                  ops = 0;
                  opm = 0;
@@ -386,14 +386,14 @@ skip_save:
                     ops = 1;
 
                  p = strstr(input, "*");
-                 if(p) 
+                 if(p)
                     opm = 1;
 
                  p = strstr(input, "/");
                  if(p)
                     opd = 1;
 
-                 if((opa == 1) || (ops == 1) || (opm == 1) || (opd == 1))
+                if((opa == 1) || (ops == 1) || (opm == 1) || (opd == 1))
                  {
                      pi = 0;
                      z3 = 1;
@@ -420,7 +420,7 @@ skip_save:
                         sprintf(sheet[i9][jj], "%d", z4);
                      }
                  }
-   
+
                p = strstr(input, "SUM");
                if(p)
                {
@@ -435,17 +435,17 @@ skip_save:
                if(p)
                {
                   Rng_proc();
-               } 
+               }
                p = strstr(input, "DATE");
                if(p)
                {
                   Date_pr();
-               } 
+               }
                p = strstr(input, "MTH");
                if(p)
                {
                   Mth_proc();
-               } 
+               }
                p = strstr(input, "DAY");
                if(p)
                {
@@ -489,14 +489,14 @@ skip_save:
             }
           }
         }
- 
+
 print_loop:
-      
+
         strcpy(fblk3, "  ");
-        strcpy(mapa.mapai.valuei, fblk3);  
-        strcpy(fblk18, "                 "); 
-        strcpy(mapa.mapai.celli, fblk18);
-       
+        strcpy(MAPA.MAPAI.VALUEI, fblk3);
+        strcpy(fblk18, "                 ");
+        strcpy(MAPA.MAPAI.CELLI, fblk18);
+
         rct = sv_rct;
         cct = sv_cct;
 
@@ -513,7 +513,7 @@ print_loop:
      }               /* end of while(1) loop */
 
      /* If PF1 pressed, here */
-         EXEC KICKS XCTL PROGRAM("KSSFPGM") NOHANDLE ;  
+         EXEC CICS XCTL PROGRAM("CSSFPGM") NOHANDLE ;
 }
 
 
@@ -537,12 +537,12 @@ int isNumber(char str[20])
 double Expression()	
 {
    char ch;
-   
+
    double Value;
 
    z1 = 0;
    z4 = 0;
- 
+
    ch = input[pi];
    if(ch != '=')
    {
@@ -555,13 +555,13 @@ double Expression()
       pi++;
       ch = input[pi];
    }
-   pi++; 
+   pi++;
    ch = input[pi];		/* got cell for math */
    varname[0] = ch;
    varname[1] = '\0';
    epos = pi;
    if(IsAddop(ch))
-   {  
+   {
       Value = 0;  		
    }
    else
@@ -579,7 +579,7 @@ double Expression()
           Match('+');
           Value = Value + Term();
           break;
-    
+
         case '-':
           Match('-');
           Value = Value - Term();
@@ -597,7 +597,7 @@ double Expression()
 
 
 double Term()		
-{   
+{
    char ch;
    int pi;
    double Value;
@@ -612,22 +612,22 @@ double Term()
      {
         case '*':
           Match('*');
-          Value = Value * Factor();   
+          Value = Value * Factor();
           break;
-    
+
         case '/':
           Match('/');
-          Value = Value / Factor();   
+          Value = Value / Factor();
           break;
 
         case '^':
           Match('^');
-          Value = pow(Value, Factor()); 
+          Value = pow(Value, Factor());
           break;
 
         case '%':
           Match('%');
-          Value = (int) Value % (int) Factor();     
+          Value = (int) Value % (int) Factor();
           break;
 
         default:
@@ -639,13 +639,13 @@ double Term()
   return Value;
 }
 
-double Factor()                        
-{ 
+double Factor()
+{
    char ch;
    int pi;
    double value;
 
-   pi = epos; 
+   pi = epos;
    ch = input[pi];
 
 /* printf("\nFACTOR #1 ch = %c pi = %d input = %s\n",ch,pi,input); */
@@ -683,7 +683,7 @@ double Factor()
               break;
            if(ch == ' ')
               break;
-           
+
            if(ch != '=')
            {
               wk_row[z2] = ch;
@@ -715,7 +715,7 @@ double Factor()
                    }
                 }
              }
-               
+
              else
                 z2 = 0;
                 for(z1 = 1; z1 <= 26; z1++)
@@ -744,7 +744,7 @@ double Factor()
                 }
              }
              else
-             
+
                 z2 = 0;
                 for(z1 = 1; z1 <= 26; z1++)
                 {
@@ -757,8 +757,8 @@ double Factor()
                 wk_row1[0] = wk_row[1];
                 wk_row1[1] = wk_row[2];
                 wk_row1[2] = '\0';
-                mrow = atoi(wk_row1);  
-           }  
+                mrow = atoi(wk_row1);
+           }
 
           value = spreadsheet[mrow][mcol];
 
@@ -766,7 +766,7 @@ double Factor()
      }
      else				
      {
-         value = GetNum(); 
+         value = GetNum();
      }
   }
   return value;
@@ -774,7 +774,7 @@ double Factor()
 
 
 double GetNum()			
-{   
+{
    char ch;
    int pi;
    double value=0;
@@ -784,7 +784,7 @@ double GetNum()
    if((!isdigit(ch)) && (ch != '.'))
    {
      /*strcpy(t_holder, "Numeric Value"); */
-     
+
    }
    value = asc_2_dbl();
 /*
@@ -806,7 +806,7 @@ double GetNum()
 
 
 double asc_2_dbl()
-{   
+{
    char ch, cvalue[33];
    int pi, vi_pos=0;
    double fvalue;
@@ -821,14 +821,14 @@ double asc_2_dbl()
      ch = input[pi];
    }
    cvalue[vi_pos] = '\0';
-   fvalue = atof(cvalue);                 
+   fvalue = atof(cvalue);
    epos = pi;
    return fvalue;
 }
 
 
 int IsAddop(char ch) 		
-{   
+{
    int rval=0;
 
    if((ch == '+') || (ch == '-'))
@@ -840,12 +840,12 @@ int IsAddop(char ch)
 
 
 int IsMultop(char ch) 		
-{   
+{
    int rval=0;
 
    if(ch == '\0')
-   {                       
-     rval = 0;           
+   {
+     rval = 0;
    }
    else if(strchr("*^/%", ch))
    {
@@ -854,8 +854,8 @@ int IsMultop(char ch)
    return rval;
 }
 
-void Match(char x)             
-{   
+void Match(char x)
+{
    char ch, string[6];
    int pi;
 
@@ -874,7 +874,7 @@ void Match(char x)
 }
 
 void SkipWhite() 	
-{   
+{
    char ch;
    int pi;
 
@@ -890,7 +890,7 @@ void SkipWhite()
 
 
 int Is_White(char ch)
-{   
+{
    int test=0;
 
    if((ch == ' ') || (ch == '\t'))
@@ -914,15 +914,15 @@ void Save_wsp()
    char tot_nm[5];
 
    EXEC CICS SEND
-        MAP("mapb") MAPSET("kkmsd") ERASE
+        MAP("MAPB") MAPSET("kkmsd") ERASE
         ;
 
    EXEC CICS RECEIVE
-        MAP("mapb") MAPSET("kkmsd") NOHANDLE
+        MAP("MAPB") MAPSET("kkmsd") NOHANDLE
         ;
 
-   strcpy(wk_file, mapb.mapbi.swkspi);
-   strcpy(mapa.mapao.wspnmo, wk_file); 
+   strcpy(wk_file, MAPB.MAPBI.SWKSPI);
+   strcpy(MAPA.MAPAO.WSPNMO, wk_file);
 
    for(i = 0; i < 9; i++)
    {
@@ -935,7 +935,7 @@ void Save_wsp()
          break;
       }
    }
-   strcat(wk_file, " wps A"); 
+   strcat(wk_file, " wps A");
 
    fp = fopen(wk_file, "w");
 
@@ -954,7 +954,7 @@ void Save_wsp()
             {
                u3 = 1;
             }
-            
+
          }
          if(u3 == 0)
          {
@@ -981,16 +981,16 @@ void Save_wsp()
                u4 = 1;
             }
          }
-      
+
          if(u4 == 0)
          {
-            
-            strcpy(str1, src[i][j]); 
-           
+
+            strcpy(str1, src[i][j]);
+
             sprintf(strc, "%d", j);
-              
+
             sprintf(strr, "%d", i);
-           
+
             switch(j)
             {
                case 1:
@@ -999,7 +999,7 @@ void Save_wsp()
                     strcpy(str, " A");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "A");
                  }
                  strcat(str, strr);
@@ -1012,7 +1012,7 @@ void Save_wsp()
                     strcpy(str, " B");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "B");
                  }
                  strcat(str, strr);
@@ -1025,7 +1025,7 @@ void Save_wsp()
                     strcpy(str, " C");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "C");
                  }
                  strcat(str, strr);
@@ -1038,7 +1038,7 @@ void Save_wsp()
                     strcpy(str, " D");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "D");
                  }
                  strcat(str, strr);
@@ -1051,7 +1051,7 @@ void Save_wsp()
                     strcpy(str, " E");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "E");
                  }
                  strcat(str, strr);
@@ -1064,7 +1064,7 @@ void Save_wsp()
                     strcpy(str, " F");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "F");
                  }
                  strcat(str, strr);
@@ -1077,7 +1077,7 @@ void Save_wsp()
                     strcpy(str, " G");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "G");
                  }
                  strcat(str, strr);
@@ -1090,7 +1090,7 @@ void Save_wsp()
                     strcpy(str, " H");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "H");
                  }
                  strcat(str, strr);
@@ -1103,7 +1103,7 @@ void Save_wsp()
                     strcpy(str, " I");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "I");
                  }
                  strcat(str, strr);
@@ -1116,7 +1116,7 @@ void Save_wsp()
                     strcpy(str, " J");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "J");
                  }
                  strcat(str, strr);
@@ -1129,7 +1129,7 @@ void Save_wsp()
                     strcpy(str, " K");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "K");
                  }
                  strcat(str, strr);
@@ -1142,7 +1142,7 @@ void Save_wsp()
                     strcpy(str, " L");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "L");
                  }
                  strcat(str, strr);
@@ -1155,7 +1155,7 @@ void Save_wsp()
                     strcpy(str, " M");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "M");
                  }
                  strcat(str, strr);
@@ -1168,7 +1168,7 @@ void Save_wsp()
                     strcpy(str, " N");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "N");
                  }
                  strcat(str, strr);
@@ -1181,7 +1181,7 @@ void Save_wsp()
                     strcpy(str, " O");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "O");
                  }
                  strcat(str, strr);
@@ -1194,7 +1194,7 @@ void Save_wsp()
                     strcpy(str, " P");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "P");
                  }
                  strcat(str, strr);
@@ -1207,7 +1207,7 @@ void Save_wsp()
                     strcpy(str, " Q");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "Q");
                  }
                  strcat(str, strr);
@@ -1220,7 +1220,7 @@ void Save_wsp()
                     strcpy(str, " R");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "R");
                  }
                  strcat(str, strr);
@@ -1233,7 +1233,7 @@ void Save_wsp()
                     strcpy(str, " S");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "S");
                  }
                  strcat(str, strr);
@@ -1246,7 +1246,7 @@ void Save_wsp()
                     strcpy(str, " T");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "T");
                  }
                  strcat(str, strr);
@@ -1259,7 +1259,7 @@ void Save_wsp()
                     strcpy(str, " U");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "U");
                  }
                  strcat(str, strr);
@@ -1272,7 +1272,7 @@ void Save_wsp()
                     strcpy(str, " V");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "V");
                  }
                  strcat(str, strr);
@@ -1285,7 +1285,7 @@ void Save_wsp()
                     strcpy(str, " W");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "W");
                  }
                  strcat(str, strr);
@@ -1298,7 +1298,7 @@ void Save_wsp()
                     strcpy(str, " X");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "X");
                  }
                  strcat(str, strr);
@@ -1311,7 +1311,7 @@ void Save_wsp()
                     strcpy(str, " Y");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "Y");
                  }
                  strcat(str, strr);
@@ -1324,7 +1324,7 @@ void Save_wsp()
                     strcpy(str, " Z");
                  }
                  else
-                 {  
+                 {
                     strcpy(str, "Z");
                  }
                  strcat(str, strr);
@@ -1333,7 +1333,7 @@ void Save_wsp()
             }
             fprintf(fp, "%s %s\n", str,str1);
          }
-      }     
+      }
    }
    fclose(fp);
 }
@@ -1357,18 +1357,18 @@ void Load_wsp(void)
    char c;
    char wk_num[4];
    char wk_str[4];
- 
+
    Clear_pr();
 
    EXEC CICS SEND
-        MAP("mapc") MAPSET("kkmsd") ERASE
+        MAP("MAPC") MAPSET("kkmsd") ERASE
         ;
 
    EXEC CICS RECEIVE
-        MAP("mapc") MAPSET("kkmsd") NOHANDLE
+        MAP("MAPC") MAPSET("kkmsd") NOHANDLE
         ;
 
-   strcpy(wk_file, mapc.mapci.lwkspi);
+   strcpy(wk_file, MAPC.MAPCi.LWKSPI);
    for(i = 0; i < 9; i++)
    {
       if(isalnum(wk_file[i]))
@@ -1380,24 +1380,24 @@ void Load_wsp(void)
          break;
       }
    }
-   strcpy(sheet_nm, "CELL");  
+   strcpy(sheet_nm, "CELL");
    strcpy(wkspace, wk_file);
-         
-   strcat(wk_file, " wps A"); 
+
+   strcat(wk_file, " wps A");
 
    fp = fopen(wk_file, "r");
    if(fp == NULL)
    {
-         strcpy(mapc.mapco.zerr1o, "File Not found ");
-         strcpy(mapc.mapco.zerr2o, "Press Return to Continue");
+         strcpy(MAPC.MAPCO.ZERR1O, "File Not found ");
+         strcpy(MAPC.MAPCO.ZERR2O, "Press Return to Continue");
          strcpy(wkspace, "        ");
 
          EXEC CICS SEND
-              MAP("mapc") MAPSET("kkmsd") ERASE
+              MAP("MAPC") MAPSET("kkmsd") ERASE
               ;
 
          EXEC CICS RECEIVE
-              MAP("mapc") MAPSET("kkmsd") NOHANDLE
+              MAP("MAPC") MAPSET("kkmsd") NOHANDLE
               ;
       return;
    }
@@ -1414,8 +1414,8 @@ void Load_wsp(void)
       wk_num[i] = c;
    }
    wk_num[i] = '\0';
-   tot_ct = atoi(wk_num); 
-   
+   tot_ct = atoi(wk_num);
+
    /* source */
    tot_ct--;
 
@@ -1434,7 +1434,7 @@ end1:
       str[k] = '\0';
 
       for(m = 0; m <= 19; m++)
-      { 
+      {
          c = fgetc(fp);
          if(c == '\n')
          {
@@ -1453,7 +1453,7 @@ end2:
          wk_str[1] = '0';
          wk_row[0] = str[2];
          wk_row[1] = '\0';
-         lrow = atoi(wk_row);  
+         lrow = atoi(wk_row);
       }
       else
       {
@@ -1462,7 +1462,7 @@ end2:
          wk_row[0] = str[1];
          wk_row[1] = str[2];
          wk_row[2] = '\0';
-         lrow = atoi(wk_row);  
+         lrow = atoi(wk_row);
       }
 
       for(k = 0; k < 26; k++)
@@ -1507,11 +1507,11 @@ end2:
            {
                flag1 = 0;
                break;
-           } 
+           }
        }
 
        /* if(isNumber(str1))  */
-       if(flag1 == 1)   
+       if(flag1 == 1)
        {
              u2 = 0;
              u5 = 0;
@@ -1541,7 +1541,7 @@ end2:
                 src[lrow][lcol][12] = '\0';
              }
           }
-          else                    
+          else
           {
              strcpy(sheet[lrow][lcol], str1);
              strcpy(src[lrow][lcol], str1);
@@ -1566,11 +1566,11 @@ void Get_date()
 
     time_t T=time(NULL);
     struct  tm tm = *localtime(&T);
-   
-    day   = tm.tm_mday;            
-    month = tm.tm_mon+1;       
-    year  = tm.tm_year+1900; 
- 
+
+    day   = tm.tm_mday;
+    month = tm.tm_mon+1;
+    year  = tm.tm_year+1900;
+
     sprintf(tmp_var2, "%02d", month);
     strcpy(f_mth, tmp_var2);
     strcpy(f_date, tmp_var2);
@@ -1582,7 +1582,7 @@ void Get_date()
     sprintf(tmp_var4, "%02d",year);
     strcat(f_date, tmp_var4);
     strcpy(f_yr, tmp_var4);
-    strcat(f_date, "\0");  
+    strcat(f_date, "\0");
 }
 
 
@@ -1614,28 +1614,28 @@ void Get_time()
 
 
 
-void View_dsp()
+void view_dsp()
 {
-      
+
     char wk_col[2];
     char wk_row[3];
-          
+
     Get_date();
     Get_time();
 
-    strcpy(mapd.mapdo.ncolo, " ");
-    strcpy(mapd.mapdo.nrowo, " ");
+    strcpy(MAPD.MAPDO.NCOLO, " ");
+    strcpy(MAPD.MAPDO.NROWO, " ");
 
     EXEC CICS SEND
-         MAP("mapd") MAPSET("kkmsd") ERASE
+         MAP("MAPD") MAPSET("kkmsd") ERASE
          ;
 
     EXEC CICS RECEIVE
-         MAP("mapd") MAPSET("kkmsd") NOHANDLE
+         MAP("MAPD") MAPSET("kkmsd") NOHANDLE
          ;
 
-   strcpy(wk_col, mapd.mapdi.ncoli);
-   strcpy(wk_row, mapd.mapdi.nrowi);
+   strcpy(wk_col, MAPD.MAPDI.NCOLI);
+   strcpy(wk_row, MAPD.MAPDI.NROWI);
 
    z2 = 0;
    for(z1 = 1; z1 <= 27; z1++)
@@ -1656,7 +1656,7 @@ void Sum_proc()
    p = strstr(input,"(");
    if(p == NULL)
    {
-      
+
    }
    else
    {
@@ -1685,15 +1685,15 @@ void Sum_proc()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
-                
+
                 for(z4 = 1; z4 <= 26; z4++)
                 {
                    if(wk_row[0] == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -1714,7 +1714,7 @@ void Sum_proc()
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -1743,7 +1743,7 @@ void Sum_proc()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
                 for(z4 = 1; z4 <= 26; z4++)
@@ -1754,7 +1754,7 @@ void Sum_proc()
                       break;
                    }
                 }
-              i2 = wk_row[1] - '1'+1;  
+              i2 = wk_row[1] - '1'+1;
           }
       }
 
@@ -1776,14 +1776,14 @@ void Sum_proc()
              wk_row[0] = wk_row[1];
              wk_row[1] = wk_row[2];
              wk_row[2] = '\0';
-             i2 = atoi(wk_row);       
+             i2 = atoi(wk_row);
           }
       }
 
 
       if(i2 == i1)
       {
-         for(j = j1; j <= j2; j++)
+         for(j = j3; j <= j2; j++)
          {
             if(flag[i1][j] == 1)
             {
@@ -1793,13 +1793,13 @@ void Sum_proc()
          }
       }
 
-      if(j2 == j1)
+      if(j2 == j3)
       {
          for(i = i1; i <= i2; i++)
          {
-            if(flag[i][j1] == 1)
+            if(flag[i][j3] == 1)
             {
-               sum += spreadsheet[i][j1];
+               sum += spreadsheet[i][j3];
                cnt++;
             }
          }
@@ -1821,9 +1821,9 @@ void Avg_proc(void)
    p = strstr(input,"(");
    if(p == NULL)
    {
-      
+
    }
-   else 
+   else
    {
       z1 = 0;
       z2 = 0;
@@ -1849,15 +1849,15 @@ void Avg_proc(void)
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
-                
+
                 for(z4 = 1; z4 <= 26; z4++)
                 {
                    if(wk_row[0] == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -1878,7 +1878,7 @@ void Avg_proc(void)
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -1906,7 +1906,7 @@ void Avg_proc(void)
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
                 for(z4 = 1; z4 <= 26; z4++)
@@ -1917,7 +1917,7 @@ void Avg_proc(void)
                       break;
                    }
                 }
-              i2 = wk_row[1] - '1'+1;  
+              i2 = wk_row[1] - '1'+1;
           }
       }
 
@@ -1939,13 +1939,13 @@ void Avg_proc(void)
              wk_row[0] = wk_row[1];
              wk_row[1] = wk_row[2];
              wk_row[2] = '\0';
-             i2 = atoi(wk_row);       
+             i2 = atoi(wk_row);
           }
       }
 
       if(i2 == i1)
        {
-          for(j = j1; j <= j2; j++)
+          for(j = j3; j <= j2; j++)
           {
              if(flag[i1][j] == 1)
              {
@@ -1955,13 +1955,13 @@ void Avg_proc(void)
           }
   	}
 
-       if(j2 == j1)
+       if(j2 == j3)
        {
           for(i = i1; i <= i2; i++)
           {
-             if(flag[i][j1] == 1)
+             if(flag[i][j3] == 1)
              {
-                avg += spreadsheet[i][j1];
+                avg += spreadsheet[i][j3];
                 cnt++;
              }
           }
@@ -1981,9 +1981,9 @@ void Rng_proc()
    p = strstr(input,"(");
    if(p == NULL)
    {
-      
+
    }
-   else 
+   else
    {
       z1 = 0;
       z2 = 0;
@@ -2009,15 +2009,15 @@ void Rng_proc()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
-                
+
                 for(z4 = 1; z4 <= 26; z4++)
                 {
                    if(wk_row[0] == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -2038,7 +2038,7 @@ void Rng_proc()
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -2067,7 +2067,7 @@ void Rng_proc()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
                 for(z4 = 1; z4 <= 26; z4++)
@@ -2078,7 +2078,7 @@ void Rng_proc()
                       break;
                    }
                 }
-              i2 = wk_row[1] - '1'+1;  
+              i2 = wk_row[1] - '1'+1;
           }
       }
 
@@ -2100,13 +2100,13 @@ void Rng_proc()
              wk_row[0] = wk_row[1];
              wk_row[1] = wk_row[2];
              wk_row[2] = '\0';
-             i2 = atoi(wk_row);       
+             i2 = atoi(wk_row);
           }
       }
 
       if(i1 == i2)
       {
-         for(j = j1; j <= j2; j++)
+         for(j = j3; j <= j2; j++)
          {
             if((flag[i1][j] == 1) && (maxm < spreadsheet[i1][j]))
             {
@@ -2119,22 +2119,22 @@ void Rng_proc()
          }
       }
 
-      if(j1 == j2)
+      if(j3 == j2)
       {
          for(i = i1; i <= i2; i++)
          {
-            if((flag[i][j1] == 1) && (maxm < spreadsheet[i][j1]))
+            if((flag[i][j3] == 1) && (maxm < spreadsheet[i][j3]))
             {
-               maxm = spreadsheet[i][j1];
+               maxm = spreadsheet[i][j3];
             }
-            if((flag[i][j1] == 1) && (minm > spreadsheet[i][j1]))
+            if((flag[i][j3] == 1) && (minm > spreadsheet[i][j3]))
             {
-                minm = spreadsheet[i][j1];
+                minm = spreadsheet[i][j3];
             }
          }
       }
       spreadsheet[row][col] = maxm-minm;
-                     
+
       sprintf(sheet[i9][jj],"%.2f",avg/cnt);
       if(strlen(sheet[i9][jj]) > 12)
       {
@@ -2264,9 +2264,9 @@ void Sqrt_pr()
    p = strstr(input,"(");
    if(p == NULL)
    {
-      
+
    }
-   else 
+   else
    {
       z1 = 0;
       z2 = 0;
@@ -2291,19 +2291,19 @@ void Sqrt_pr()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
-                
+
                 for(z4 = 1; z4 <= 26; z4++)
                 {
                    if(wk_row[0] == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
-              i1 = wk_row[1] - '1'+1;  
+              i1 = wk_row[1] - '1'+1;
 
           }
       }
@@ -2320,7 +2320,7 @@ void Sqrt_pr()
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -2328,14 +2328,14 @@ void Sqrt_pr()
              wk_row[0] = wk_row[1];
              wk_row[1] = wk_row[2];
              wk_row[2] = '\0';
-             i1 = atoi(wk_row);        
+             i1 = atoi(wk_row);
           }
       }
 
-      value = spreadsheet[i1][j1];
+      value = spreadsheet[i1][j3];
       sum = sqrt(value);
       spreadsheet[i9][jj] = sum;
-                     
+
       sprintf(sheet[i9][jj],"%.2f",sum);
       if(strlen(sheet[i9][jj]) > 12)
       {
@@ -2359,12 +2359,12 @@ void Print_pr()
    scanf("%s",input);
 
    x = strlen(input);
-   
+
 /* printf("print_pr x = %d input = %s\n",x, input); */
    z1 = 0;
    z4 = 0;
    z2 = 0;
-   
+
    if(x == 2)
    {
       wk_row[0] = input[0];
@@ -2387,15 +2387,15 @@ void Print_pr()
    if(x == 2)
    {
       if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-      {      
+      {
          z2 = 0;
          z4 = 1;
-                
+
          for(z4 = 1; z4 <= 26; z4++)
          {
             if(wk_row[0] == sheet[z2][z4][0])
             {
-               j1 = z4;
+               j3 = z4;
                st_col = z4;
                break;
             }
@@ -2417,7 +2417,7 @@ void Print_pr()
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       st_col = z4;
                       break;
                    }
@@ -2438,7 +2438,7 @@ void Print_pr()
    z1 = 0;
    z4 = 0;
    z2 = 0;
-   
+
    if(x == 2)
    {
       wk_row[0] = input[0];
@@ -2462,7 +2462,7 @@ void Print_pr()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
                 for(z4 = 1; z4 <= 26; z4++)
@@ -2474,8 +2474,8 @@ void Print_pr()
                       break;
                    }
                 }
-              i2 = wk_row[1] - '1'+1; 
-              end_row = i2; 
+              i2 = wk_row[1] - '1'+1;
+              end_row = i2;
           }
       }
 
@@ -2498,11 +2498,11 @@ void Print_pr()
              wk_row[0] = wk_row[1];
              wk_row[1] = wk_row[2];
              wk_row[2] = '\0';
-             i2 = atoi(wk_row);  
-             end_row = i2;     
+             i2 = atoi(wk_row);
+             end_row = i2;
           }
       }
- 
+
 
 /* printf("end_col = %d end_row = %d\n",end_col, end_row); */
 
@@ -2511,7 +2511,7 @@ void Print_pr()
 /*
    fprintf(fp, "%s","This is a test\n");
    fprintf(fp, "%s","LINE TWO\n");
-  
+
    i = 0;
    for(j = cct; j <= cct+4; j++)
    {
@@ -2545,9 +2545,9 @@ void Pow_dsp()
    p = strstr(input,"(");
    if(p == NULL)
    {
-     
+
    }
-   else 
+   else
    {
       z1 = 0;
       z2 = 0;
@@ -2573,15 +2573,15 @@ void Pow_dsp()
       if(x == 2)
       {
          if((wk_row[0] >= 'A') && (wk_row[0] <= 'Z'))
-         {      
+         {
                 z2 = 0;
                 z4 = 1;
-                
+
                 for(z4 = 1; z4 <= 26; z4++)
                 {
                    if(wk_row[0] == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -2601,7 +2601,7 @@ void Pow_dsp()
                 {
                    if(ch == sheet[z2][z4][0])
                    {
-                      j1 = z4;
+                      j3 = z4;
                       break;
                    }
                 }
@@ -2612,7 +2612,7 @@ void Pow_dsp()
              i1 = atoi(wk_row);        /* now have row number */
           }
       }
-      value = spreadsheet[i1][j1];
+      value = spreadsheet[i1][j3];
 
       z2 = 0;
       z1++;
@@ -2629,7 +2629,7 @@ void Pow_dsp()
 
       sum = pow(value,xx);
       spreadsheet[i9][jj] = sum;
-                     
+
       sprintf(sheet[i9][jj],"%.2f",sum);
       if(strlen(sheet[i9][jj]) > 12)
       {
@@ -2640,7 +2640,7 @@ void Pow_dsp()
 
 void Clear_pr()
 {
-       for(i = 0; i <= wsize; i++)      
+       for(i = 0; i <= wsize; i++)
        {
           z1 = 1;
           for(j = 0; j <= 26; j++)
@@ -2648,9 +2648,9 @@ void Clear_pr()
              sheet[i][j][0] = '_';
              sheet[i][j][1] = '\0';
              src[i][j][0] = '_';
-             src[1][j][1] = '\0'; 
+             src[1][j][1] = '\0';
 
-            
+
              if((i == 0) && (j != 0))
              {
                 if(z1 == 10)
@@ -2661,7 +2661,7 @@ void Clear_pr()
                 {
                    z1 = 34;
                 }
-                
+
                 sheet[i][j][0] = 'A'+z1-1;
                 src[i][j][0] = 'A'+z1-1;
                 z1++;
@@ -2672,7 +2672,7 @@ void Clear_pr()
                 sheet[i][j][0] = '0'+i;
                 src[i][j][0] = '0'+i;
              }
-             
+
              if((i == 0) && (j == 0))
              {
                 sheet[0][26][0] = 'Z';
@@ -2682,8 +2682,8 @@ void Clear_pr()
              }
           }
        }
-      
-       for(i = 1; i <= wsize; i++)      
+
+       for(i = 1; i <= wsize; i++)
        {
           j = 26;
           {
@@ -2695,7 +2695,7 @@ void Clear_pr()
        }
 
        j = 0;
-       for(i = 0; i <= wsize; i++)  		/* row count */    
+       for(i = 0; i <= wsize; i++)  		/* row count */
        {
           if((i != 0) && (j == 0))
           {
@@ -2718,7 +2718,7 @@ void Scr_out()
      int k2;
      int k3 = 1;
      int ii;
-     int j1;
+     int j3;
      int cct1;
      int j;
      int clmt;
@@ -2729,13 +2729,13 @@ void Scr_out()
      hdr_msg();
      if(exmode == 1)
      {
-        strcpy(mapa.mapao.wsheeto, "CELL");
+        strcpy(MAPA.MAPAO.WSHEETO, "CELL");
      }
      if(exmode == 2)
      {
-        strcpy(mapa.mapao.wsheeto, "PROG");
+        strcpy(MAPA.MAPAO.WSHEETO, "PROG");
      }
-    
+
      if(rct == 0)
      {
         rct = 1;
@@ -2747,67 +2747,67 @@ void Scr_out()
      for(ii = rct; ii <= rct+15; ii++)	/* output row number */
      {
         sprintf(drow, "%s", sheet[ii][j]);
-       
+
         kk++;				
         if(kk == 1)
         {
-            strcpy(mapa.mapao.rd1o, drow);
+            strcpy(MAPA.MAPAO.RD1O, drow);
         }
         if(kk == 2)
         {
-            strcpy(mapa.mapao.rd2o, drow);
+            strcpy(MAPA.MAPAO.RD2O, drow);
         }
         if(kk == 3)
         {
-            strcpy(mapa.mapao.rd3o, drow);
+            strcpy(MAPA.MAPAO.RD3O, drow);
         }
         if(kk == 4)
         {
-            strcpy(mapa.mapao.rd4o, drow);
+            strcpy(MAPA.MAPAO.RD4O, drow);
         }
         if(kk == 5)
         {
-            strcpy(mapa.mapao.rd5o, drow);
+            strcpy(MAPA.MAPAO.RD5O, drow);
         }
         if(kk == 6)
         {
-            strcpy(mapa.mapao.rd6o, drow);
+            strcpy(MAPA.MAPAO.RD6O, drow);
         }
         if(kk == 7)
         {
-            strcpy(mapa.mapao.rd7o, drow);
+            strcpy(MAPA.MAPAO.RD7O, drow);
         }
         if(kk == 8)
         {
-            strcpy(mapa.mapao.rd8o, drow);
+            strcpy(MAPA.MAPAO.RD8O, drow);
         }
         if(kk == 9)
         {
-            strcpy(mapa.mapao.rd9o, drow);
+            strcpy(MAPA.MAPAO.RD9O, drow);
         }
         if(kk == 10)
         {
-            strcpy(mapa.mapao.rd10o, drow);
+            strcpy(MAPA.MAPAO.RD10O, drow);
         }
         if(kk == 11)
         {
-            strcpy(mapa.mapao.rd11o, drow);
+            strcpy(MAPA.MAPAO.RD11O, drow);
         }
         if(kk == 12)
         {
-            strcpy(mapa.mapao.rd12o, drow);
+            strcpy(MAPA.MAPAO.RD12O, drow);
         }
         if(kk == 13)
         {
-            strcpy(mapa.mapao.rd13o, drow);
+            strcpy(MAPA.MAPAO.RD13O, drow);
         }
         if(kk == 14)
         {
-            strcpy(mapa.mapao.rd14o, drow);
+            strcpy(MAPA.MAPAO.RD14O, drow);
         }
         if(kk == 15)
         {
-            strcpy(mapa.mapao.rd15o, drow);
+            strcpy(MAPA.MAPAO.RD15O, drow);
         }
 
         clmt = 3;
@@ -2816,18 +2816,18 @@ void Scr_out()
         {
           cct1 = 23;
         }
-                
+
         k2 = 0;			/* output 4 columns */
-        for(j1 = cct1; j1 <= cct1 + clmt; j1++)
+        for(j3 = cct1; j3 <= cct1 + clmt; j3++)
         {
             if(exmode == 1)
             {
-               sprintf(temp, "%18s", sheet[ii][j1]);
+               sprintf(temp, "%18s", sheet[ii][j3]);
             }
 
             if(exmode == 2)
             {
-               sprintf(temp, "%18s", src[ii][j1]);
+               sprintf(temp, "%18s", src[ii][j3]);
             }
 
             if(k3 == 1)
@@ -2835,19 +2835,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd1o, temp);
+                   strcpy(MAPA.MAPAO.BD1O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd2o, temp);
+                   strcpy(MAPA.MAPAO.BD2O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd3o, temp);
+                   strcpy(MAPA.MAPAO.BD3O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd4o, temp);
+                   strcpy(MAPA.MAPAO.BD4O, temp);
                }
             }
 
@@ -2856,19 +2856,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd5o, temp);
+                   strcpy(MAPA.MAPAO.BD5O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd6o, temp);
+                   strcpy(MAPA.MAPAO.BD6O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd7o, temp);
+                   strcpy(MAPA.MAPAO.BD7O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd8o, temp);
+                   strcpy(MAPA.MAPAO.BD8O, temp);
                }
             }
 
@@ -2877,19 +2877,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd9o, temp);
+                   strcpy(MAPA.MAPAO.BD9O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd10o, temp);
+                   strcpy(MAPA.MAPAO.BD10O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd11o, temp);
+                   strcpy(MAPA.MAPAO.BD11O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd12o, temp);
+                   strcpy(MAPA.MAPAO.BD12O, temp);
                }
             }
 
@@ -2898,19 +2898,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd13o, temp);
+                   strcpy(MAPA.MAPAO.BD13O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd14o, temp);
+                   strcpy(MAPA.MAPAO.BD14O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd15o, temp);
+                   strcpy(MAPA.MAPAO.BD15O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd16o, temp);
+                   strcpy(MAPA.MAPAO.BD16O, temp);
                }
             }
 
@@ -2919,19 +2919,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd17o, temp);
+                   strcpy(MAPA.MAPAO.BD17O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd18o, temp);
+                   strcpy(MAPA.MAPAO.BD18O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd19o, temp);
+                   strcpy(MAPA.MAPAO.BD19O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd20o, temp);
+                   strcpy(MAPA.MAPAO.BD20O, temp);
                }
             }
 
@@ -2940,19 +2940,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd21o, temp);
+                   strcpy(MAPA.MAPAO.BD21O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd22o, temp);
+                   strcpy(MAPA.MAPAO.BD22O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd23o, temp);
+                   strcpy(MAPA.MAPAO.BD23O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd24o, temp);
+                   strcpy(MAPA.MAPAO.BD24O, temp);
                }
             }
 
@@ -2961,19 +2961,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd25o, temp);
+                   strcpy(MAPA.MAPAO.BD25O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd26o, temp);
+                   strcpy(MAPA.MAPAO.BD26O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd27o, temp);
+                   strcpy(MAPA.MAPAO.BD27O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd28o, temp);
+                   strcpy(MAPA.MAPAO.BD28O, temp);
                }
             }
 
@@ -2982,19 +2982,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd29o, temp);
+                   strcpy(MAPA.MAPAO.BD29O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd30o, temp);
+                   strcpy(MAPA.MAPAO.BD30O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd31o, temp);
+                   strcpy(MAPA.MAPAO.BD31O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd32o, temp);
+                   strcpy(MAPA.MAPAO.BD32O, temp);
                }
             }
 
@@ -3003,19 +3003,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd33o, temp);
+                   strcpy(MAPA.MAPAO.BD33O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd34o, temp);
+                   strcpy(MAPA.MAPAO.BD34O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd35o, temp);
+                   strcpy(MAPA.MAPAO.BD35O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd36o, temp);
+                   strcpy(MAPA.MAPAO.BD36O, temp);
                }
             }
 
@@ -3024,19 +3024,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd37o, temp);
+                   strcpy(MAPA.MAPAO.BD37O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd38o, temp);
+                   strcpy(MAPA.MAPAO.BD38O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd39o, temp);
+                   strcpy(MAPA.MAPAO.BD39O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd40o, temp);
+                   strcpy(MAPA.MAPAO.BD40O, temp);
                }
             }
 
@@ -3045,19 +3045,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd41o, temp);
+                   strcpy(MAPA.MAPAO.BD41O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd42o, temp);
+                   strcpy(MAPA.MAPAO.BD42O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd43o, temp);
+                   strcpy(MAPA.MAPAO.BD43O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd44o, temp);
+                   strcpy(MAPA.MAPAO.BD44O, temp);
                }
             }
 
@@ -3066,19 +3066,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd45o, temp);
+                   strcpy(MAPA.MAPAO.BD45O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd46o, temp);
+                   strcpy(MAPA.MAPAO.BD46O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd47o, temp);
+                   strcpy(MAPA.MAPAO.BD47O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd48o, temp);
+                   strcpy(MAPA.MAPAO.BD48O, temp);
                }
             }
 
@@ -3087,19 +3087,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd49o, temp);
+                   strcpy(MAPA.MAPAO.BD49O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd50o, temp);
+                   strcpy(MAPA.MAPAO.BD50O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd51o, temp);
+                   strcpy(MAPA.MAPAO.BD51O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd52o, temp);
+                   strcpy(MAPA.MAPAO.BD52O, temp);
                }
             }
 
@@ -3108,19 +3108,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd53o, temp);
+                   strcpy(MAPA.MAPAO.BD53O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd54o, temp);
+                   strcpy(MAPA.MAPAO.BD54O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd55o, temp);
+                   strcpy(MAPA.MAPAO.BD55O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd56o, temp);
+                   strcpy(MAPA.MAPAO.BD56O, temp);
                }
             }
 
@@ -3129,19 +3129,19 @@ void Scr_out()
                k2++;
                if(k2 == 1)
                {
-                   strcpy(mapa.mapao.bd57o, temp);
+                   strcpy(MAPA.MAPAO.BD57O, temp);
                }
                if(k2 == 2)
                {
-                   strcpy(mapa.mapao.bd58o, temp);
+                   strcpy(MAPA.MAPAO.BD58O, temp);
                }
                if(k2 == 3)
                {
-                   strcpy(mapa.mapao.bd59o, temp);
+                   strcpy(MAPA.MAPAO.BD59O, temp);
                }
                if(k2 == 4)
                {
-                   strcpy(mapa.mapao.bd60o, temp);
+                   strcpy(MAPA.MAPAO.BD60O, temp);
                }
             }
         }
@@ -3158,10 +3158,10 @@ void hdr_msg()
      Get_time();
      Get_date();
 
-     strcpy(mapa.mapao.stimeo, f_time);
-     strcpy(mapa.mapao.sdateo, f_date);
-     strcpy(mapa.mapao.wsheeto, "CELL");
-     strcpy(mapa.mapao.wspnmo, wkspace); 
+     strcpy(MAPA.MAPAO.STIMEO, f_time);
+     strcpy(MAPA.MAPAO.SDATEO, f_date);
+     strcpy(MAPA.MAPAO.WSHEETO, "CELL");
+     strcpy(MAPA.MAPAO.WSPNMO, wkspace);
      if(cct > 23)
      {
         cct = 23;
@@ -3171,19 +3171,19 @@ void hdr_msg()
      {
         if(kk == 1)
         {
-           strcpy(mapa.mapao.hd1o, sheet[i5][j5]);
+           strcpy(MAPA.MAPAO.HD1O, sheet[i5][j5]);
         }
         if(kk == 2)
         {
-           strcpy(mapa.mapao.hd2o, sheet[i5][j5]);
+           strcpy(MAPA.MAPAO.HD2O, sheet[i5][j5]);
         }
         if(kk == 3)
         {
-           strcpy(mapa.mapao.hd3o, sheet[i5][j5]);
+           strcpy(MAPA.MAPAO.HD3O, sheet[i5][j5]);
         }
         if(kk == 4)
         {
-           strcpy(mapa.mapao.hd4o, sheet[i5][j5]);
+           strcpy(MAPA.MAPAO.HD4O, sheet[i5][j5]);
         }
         kk++;
      }
